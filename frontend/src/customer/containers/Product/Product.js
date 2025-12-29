@@ -31,6 +31,7 @@ import ProductCard from "./ProductCard";
 import { mens_kurta } from "./../../../Data/Men/mens_kurta";
 import { color, filters, singleFilter } from "./FilterData";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import React from "react";
 
 const sortOptions = [
   { name: "Price: Low to High", href: "#", current: false },
@@ -44,48 +45,39 @@ function classNames(...classes) {
 export default function Product() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
-  const location=useLocation()
-  const navigate = useNavigate()
+  const location = useLocation();
+  const navigate = useNavigate();
 
+  const handleFilter = (value, sectionId) => {
+    const searchParams = new URLSearchParams(location.search);
 
-const handleFilter=(value,sectionId)=>{
- const searchParams = new URLSearchParams(location.search)
+    let filterValue = searchParams.getAll(sectionId);
 
- let filterValue=searchParams.getAll(sectionId)
+    if (filterValue.length > 0 && filterValue[0].split(",").includes(value)) {
+      filterValue = filterValue[0].split(",").filter((item) => item !== value);
 
- if(filterValue.length>0 && filterValue[0].split(",").includes(value)){
-  filterValue=filterValue[0].split(",").filter((item) => item!==value);
+      if (filterValue.length === 0) {
+        searchParams.delete(sectionId);
+      }
+    } else {
+      filterValue.push(value);
+    }
 
-  if(filterValue.length === 0){
-    searchParams.delete(sectionId)
-  }
- }
- else{
-  filterValue.push(value)
- }
+    if (filterValue.length > 0) {
+      searchParams.set(sectionId, filterValue.join(","));
+    }
 
+    const query = searchParams.toString();
+    navigate({ search: `${query}` });
+  };
 
- if(filterValue.length>0){
-  searchParams.set(sectionId,filterValue.join(","));
+  const handleRadiofilterChange = (e, sectionId) => {
+    const searchParams = new URLSearchParams(location.search);
 
-
- }
-
-  const query=searchParams.toString();
-  navigate({search:`${query}`})
-}
-
-const handleRadiofilterChange = (e,sectionId)=>{
-  const searchParams = new URLSearchParams(location.search)
-
-  searchParams.set(sectionId,e.target.value)
-  const query = searchParams.toString();
-  navigate({search:`?${query}`})
-}
-
-
-
-
+    searchParams.set(sectionId, e.target.value);
+    const query = searchParams.toString();
+    navigate({ search: `?${query}` });
+  };
 
   return (
     <div className="bg-white">
@@ -261,11 +253,10 @@ const handleRadiofilterChange = (e,sectionId)=>{
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
               {/* Filters */}
-              
+
               <>
-              
                 <form className="hidden lg:block">
-                <h1 className="text-lg opacity-50 font-bold"> Filters</h1>
+                  <h1 className="text-lg opacity-50 font-bold"> Filters</h1>
                   {filters.map((section) => (
                     <Disclosure
                       key={section.id}
@@ -296,7 +287,9 @@ const handleRadiofilterChange = (e,sectionId)=>{
                               <div className="flex h-5 shrink-0 items-center">
                                 <div className="group grid size-4 grid-cols-1">
                                   <input
-                                  onChange={()=>handleFilter(option.value,section.id)}
+                                    onChange={() =>
+                                      handleFilter(option.value, section.id)
+                                    }
                                     defaultValue={option.value}
                                     defaultChecked={option.checked}
                                     id={`filter-${section.id}-${optionIdx}`}
@@ -380,7 +373,9 @@ const handleRadiofilterChange = (e,sectionId)=>{
                               {section.options.map((option, optionIdx) => (
                                 <>
                                   <FormControlLabel
-                                  onChange={(e)=>handleRadiofilterChange(e,section.id)}
+                                    onChange={(e) =>
+                                      handleRadiofilterChange(e, section.id)
+                                    }
                                     value={option.value}
                                     control={<Radio />}
                                     label={option.label}

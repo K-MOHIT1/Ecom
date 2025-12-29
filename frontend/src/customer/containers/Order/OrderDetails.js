@@ -33,7 +33,7 @@ const OrderDetails = () => {
                     </div>
                 </Grid>
 
-                <Grid item>
+                <Grid>
                     <Box sx={{color:deepPurple[500]}}>
                         <StarBorderIcon sx={{fontSize:"2rem"}} className='px-2'/>
                         <span>Rate & Review Product</span>
