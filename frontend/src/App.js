@@ -9,6 +9,7 @@ import ProductDetails from './customer/containers/ProductDetails/ProductDetails'
 import React from 'react';
 import Cart from 'customer/containers/Cart/Cart';
 import Checkout from 'customer/containers/Checkout/Checkout';
+import Order from 'customer/containers/Order/Order';
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
         {/* <Product></Product> */}
         {/* <ProductDetails></ProductDetails> */}
         {/* <Cart></Cart> */}
-        <Checkout/>
+        {/* <Checkout/> */}
+        <Order></Order>
       </div>
 
       <Footer></Footer>
