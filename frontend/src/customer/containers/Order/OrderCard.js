@@ -1,9 +1,10 @@
 import { Grid } from '@mui/material'
 import React from 'react'
+import AdjustIcon from '@mui/icons-material/Adjust';
 
 const OrderCard = () => {
   return (
-    <div>
+    <div className='p-5 shadow-xs shadow-black hover:shadow-2xl border'>
       <Grid container spacing={2} sx={{justifyContent:"space-between"}}>
 
         <Grid size={{xs:6}}>
@@ -30,11 +31,28 @@ const OrderCard = () => {
         </Grid>
 
         <Grid size={{xs:4}}></Grid>
-          <p>
+          {true && <div>
+
+            <p>
+
+            <AdjustIcon sx={{width:"15px" , height:"15px"}} className=' text-green-600 mr-2 text-sm'/>
             <span>
               Delivered on March 03
             </span>
+            
           </p>
+          <p className='text-xs'>
+            Your Item has been Delivered
+          </p>
+
+          </div>
+            }
+
+          {false && <p>
+            <span>
+              Expected Delivery on Mar 03
+            </span>
+          </p>}
         
       </Grid>
     </div>
